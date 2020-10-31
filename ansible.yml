@@ -6,113 +6,42 @@
   gather_facts: False
 
   tasks:
-   #Create SSH key pair and save it on local machine
-    - name: create key pair
-      ec2_key:
-        name: aws-key
-        region: us-east-2
-      register: ec2_key_result
 
-    - name: Save private key
-      copy: content="{{ ec2_key_result.key.private_key }}" dest="~/.ssh/id_rsa" mode=0600
-      when: ec2_key_result.changed
+    - name: Gather information about any instance with a tag
+      community.aws.ec2_instance_info:
+        filters:
+          "tag:Name": app_build
+        register: app_build_result
 
-    #Create Security Groups for Prod and Dev
-    - name: Ensure security group exists for Builer node
-      ec2_group:
-        name: BuilderAppSecurityGroup
-        description: Security group for Java App Bilder node with port 22 enabled
-        region: "{{region}}"
-        rules:
-          - proto: tcp
-            from_port: 22
-            to_port: 22
-            cidr_ip: 0.0.0.0/0
+    - name: Gather information about any instance with a tag
+      community.aws.ec2_instance_info:
+        filters:
+       "tag:Name": app_prod
+      register: app_prod_result
 
-    - name: Ensure security group exists for Production node
-      ec2_group:
-        name: ProdAppSecurityGroup
-        description: Security group for Production node with ports 22 and 8080 enabled
-        region: "{{ region }}"
-        rules:
-          - proto: tcp
-            from_port: 22
-            to_port: 22
-            cidr_ip: 0.0.0.0/0
-          - proto: tcp
-            from_port: 8080
-            to_port: 8080
-            cidr_ip: 0.0.0.0/0
-
-    #Provision AWS instances
-    - name: Ensure a builder node is provisioned
-      ec2:
-        key_name: aws-key
-        instance_type: t2.micro
-        image: "{{ image }}"
-        wait: yes
-        id: AWS_build_inst
-        region: "{{ region }}"
-        group: BuilderAppSecurityGroup
-        count: 1
-      register: awsBuilder
-
-    - name: Ensure a production node is provisioned
-      ec2:
-        key_name: aws-key
-        instance_type: t2.micro
-        image: "{{ image }}"
-        wait: yes
-        id: AWS_prod_inst
-        region: "{{ region }}"
-        group: ProdAppSecurityGroup
-        count: 1
-      register: awsProduction
-
-    #Get AWS instance Public IPs and Add to Ansible Hosts
     - name: Add public IP of builder
       add_host:
         hostname: "{{ item.public_ip }}"
         groupname: awsBuilder
-      loop: "{{ awsBuilder.instances }}"
+      loop: "{{ app_build_result.instances }}"
 
     - name: Add public IP of prod
       add_host:
         hostname: "{{ item.public_ip }}"
-        groupname: awsProduction
-      loop: "{{ awsProduction.instances }}"
+        groupname: awsProd
+      loop: "{{ app_prod_result.instances }}"
 
-    #Wait until instances start
-    - name: Wait for SSH to come up
-      wait_for:
-        host: "{{ item.public_dns_name }}"
-        port: 22
-        delay: 5
-        timeout: 320
-        state: started
-      with_items: "{{ awsBuilder.instances }}"
-
-    - name: Wait for SSH to come up
-      wait_for:
-        host: "{{ item.public_dns_name }}"
-        port: 22
-        delay: 60
-        timeout: 320
-        state: started
-      with_items: "{{ awsProduction.instances }}"
-
-    #Add EC2 instances to known hosts
     - name: Add EC2 awsBuilder as known hosts
       known_hosts:
         name: "{{ item.public_ip }}"
         key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_ip) }}"
-      with_items: "{{ awsBuilder.instances }}"
+      with_items: "{{ app_build_result.instances  }}"
 
-    - name: Add EC2 awsProduction as known hosts
+    - name: Add EC2 awsProd as known hosts
       known_hosts:
         name: "{{ item.public_ip }}"
         key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_ip) }}"
-      with_items: "{{ awsProduction.instances }}"
+      with_items: "{{ app_prod_result.instances  }}"
 
 #-----------------
 #Configure the builder node and build web app
@@ -125,35 +54,17 @@
   gather_facts: False
 
   tasks:
-    - name: Update repo cache and install dependencies
-      raw: apt-get update && apt-get install python -y
-
-    - name: Ensure aws directory is created
-      file:
-        path: ~/.aws
-        state: directory
-        mode: 0755
-
-    - name: Ensure AWS config presents
-      copy:
-        src: ~/.aws/config
-        dest: ~/.aws/config
-        mode: 0600
-
-    - name: Ensure AWS keys present
-      copy:
-        src: ~/.aws/credentials
-        dest: ~/.aws/credentials
-        mode: 0600
-
-    #Build java source code, deploy web app & push it to AWS registry
+    - name: Update repo cache
+      apt:
+        update_cache: yes
 
     - name: Ensure necessary packages are installed
       apt: name={{ item }} state=present
       with_items:
         - docker.io
-        - maven
         - awscli
+        - defaul-jdk
+        - maven
 
     - name: Ensure jave source code is present
       git:
@@ -174,24 +85,23 @@
     - name: Login to ECR
       shell: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 013898691880.dkr.ecr.us-east-2.amazonaws.com
 
-    #- name: ecr-repo
-    #  ecs_ecr: name=boxfusewebapp
-
     - name: Push dockerimage to ECR
       command: docker push 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+
 #-----------------
 #Configure the production node and run docker image
 #-----------------
 - name: Configure EC2 instance
-  hosts: awsProduction
+  hosts: awsProd
   remote_user: ubuntu
   become: yes
   become_user: root
   gather_facts: False
 
   tasks:
-    - name: Update repo cache and install dependencies
-      raw: apt-get update && apt-get install python -y
+    - name: Update repo cache
+      apt:
+        update_cache: yes
 
     - name: Ensure aws directory is created
       file:

@@ -9,7 +9,6 @@ pipeline {
     //Building tool
     tools {
         terraform "TF"
-        //ansible "Ans"
     }
 
     //Stages begin
@@ -34,6 +33,7 @@ pipeline {
          //Ansible start here
        stage ('Initiate playbook') {
             steps {
+                sh "sleep 1m"
                 sh "ansible-playbook ansible.yml"
             }
        }

@@ -11,18 +11,17 @@ less /var/lib/jenkins/secrets/initialAdminPassword
 #terraform
 https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip
 
-
-
-
-
-Jenkins plugins:
+#Jenkins plugins
 - Ansible
 - Terraform
 
-
-
+#Jenkins docker hub
 docker run -d -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
 
-apt install ansible
+#install python-pip and boto
+apt install -y python3-pip
+pip3 install boto
+pip3 install boto3
+pip3 install docker
 
 
