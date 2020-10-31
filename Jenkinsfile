@@ -16,8 +16,7 @@ pipeline {
     stages {
         stage ('git')   {
             steps {
-                //git 'https://github.com/azamated/Jenkins-Terraform-Ansible.git'
-                sh "wget "
+                git 'https://github.com/azamated/Jenkins-Terraform-Ansible.git'
             }
         }
 
