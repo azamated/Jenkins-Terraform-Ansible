@@ -32,5 +32,7 @@ pipeline {
             steps {
                 sh "terraform plan"
                 sh "terraform apply -auto-approve"
+            }
+        }
     }
 }
