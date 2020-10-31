@@ -5,10 +5,10 @@ pipeline {
         terraform "TF"
     }
 
-    environment {
-       ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
-       SECRET_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-   }
+  //  environment {
+   //    ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
+  //     SECRET_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+   //}
 
     stages {
         stage ('git')   {
@@ -19,9 +19,9 @@ pipeline {
 
         stage ('Terraform init and Apply') {
             steps {
-                sh 'cd Jenkins-Terraform-Ansible && terraform init'
-                sh "cd Jenkins-Terraform-Ansible && terraform plan"
-                sh "cd Jenkins-Terraform-Ansible && terraform apply -auto-approve"
+                sh 'terraform init'
+                sh "terraform plan"
+                sh "terraform apply -auto-approve"
             }
 
         }
