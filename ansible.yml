@@ -7,6 +7,7 @@
   gather_facts: False
 
   tasks:
+
     - name: Gather information about any instance with a tag
       community.aws.ec2_instance_info:
         filters:
@@ -54,6 +55,7 @@
   gather_facts: False
 
   tasks:
+
     - name: Update repo cache
       apt:
         update_cache: yes
@@ -99,6 +101,7 @@
   gather_facts: False
 
   tasks:
+
     - name: Update repo cache
       apt:
         update_cache: yes
