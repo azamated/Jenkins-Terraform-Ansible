@@ -1,6 +1,15 @@
 pipeline {
     agent any
 
+    node {
+      label 'my_instances'
+    }
+
+    environment {
+      TF_VAR_aws_secret_key = credentials('AWS_ACCESS_KEY_ID')
+      TF_VAR_aws_access_key = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+
     //Building tool
     tools {
         terraform "TF"
@@ -14,12 +23,14 @@ pipeline {
             }
         }
 
-        stage ('Terraform init and Apply') {
+        stage ('Terraform Init') {
             steps {
                 sh 'terraform init'
-                sh "terraform plan"
-                sh "terraform apply -auto-approve"
             }
         }
+        stage ('Terraform Plan and Apply') {
+            steps {
+                sh "terraform plan"
+                sh "terraform apply -auto-approve"
     }
 }
