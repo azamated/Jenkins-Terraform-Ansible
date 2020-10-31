@@ -34,7 +34,7 @@ pipeline {
          //Ansible start here
        stage ('Terraform Plan and Apply') {
             steps {
-                sh ansible-playbook ansible.yml"
+                sh "ansible-playbook ansible.yml"
             }
        }
     }
