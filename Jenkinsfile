@@ -1,15 +1,12 @@
 pipeline {
     agent any
 
+    //Building tool
     tools {
         terraform "TF"
     }
 
-  //  environment {
-   //    ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
-  //     SECRET_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-   //}
-
+    //Stages begin
     stages {
         stage ('git')   {
             steps {
@@ -23,8 +20,6 @@ pipeline {
                 sh "terraform plan"
                 sh "terraform apply -auto-approve"
             }
-
         }
     }
-
 }
