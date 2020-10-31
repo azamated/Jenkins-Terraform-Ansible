@@ -17,13 +17,13 @@
         state: started
       with_items: "{{ ec2.instances }}"
 
-    - name: Gather information about any instance with a tag
+    - name: Gather information about tag build
       community.aws.ec2_instance_info:
         filters:
           "tag:Name": "app_build"
       register: app_build_result
 
-    - name: Gather information about any instance with a tag
+    - name: Gather information about tag prod
       community.aws.ec2_instance_info:
         filters:
           "tag:Name": "app_prod"
