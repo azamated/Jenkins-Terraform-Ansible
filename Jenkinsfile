@@ -9,6 +9,7 @@ pipeline {
     //Building tool
     tools {
         terraform "TF"
+        //ansible "Ans"
     }
 
     //Stages begin
@@ -19,16 +20,22 @@ pipeline {
             }
         }
 
-        stage ('Terraform Init') {
+       stage ('Terraform Init') {
             steps {
                 sh 'terraform init'
             }
         }
-        stage ('Terraform Plan and Apply') {
+       stage ('Terraform Plan and Apply') {
             steps {
                 sh "terraform plan"
                 sh "terraform apply -auto-approve"
             }
-        }
+       }
+         //Ansible start here
+       stage ('Terraform Plan and Apply') {
+            steps {
+                sh ansible-playbook ansible.yml"
+            }
+       }
     }
 }
