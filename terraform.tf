@@ -30,6 +30,9 @@ resource "aws_instance" "builder" {
   key_name = "aws_id_rsa_pub"
   vpc_security_group_ids = ["${aws_security_group.build_allow_ssh.id}"]
 
+  tags = {
+    Name = "app_build"
+  }
 }
 
 resource "aws_instance" "production" {
@@ -39,6 +42,9 @@ resource "aws_instance" "production" {
   key_name = "aws_id_rsa_pub"
   vpc_security_group_ids = ["${aws_security_group.prod_allow_ssh_web.id}"]
 
+  tags = {
+    Name = "app_prod"
+  }
 
 }
 
