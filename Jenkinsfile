@@ -16,7 +16,8 @@ pipeline {
     stages {
         stage ('git')   {
             steps {
-                git 'https://github.com/azamated/Jenkins-Terraform-Ansible.git'
+                //git 'https://github.com/azamated/Jenkins-Terraform-Ansible.git'
+                sh "wget "
             }
         }
 
@@ -32,7 +33,7 @@ pipeline {
             }
        }
          //Ansible start here
-       stage ('Terraform Plan and Apply') {
+       stage ('Initiate playbook') {
             steps {
                 sh "ansible-playbook ansible.yml"
             }
