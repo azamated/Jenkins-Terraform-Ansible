@@ -11,13 +11,13 @@
     - name: Gather information about any instance with a tag
       community.aws.ec2_instance_info:
         filters:
-          "tag:Name": app_build
+          tag:Name: app_build
         register: app_build_result
 
     - name: Gather information about any instance with a tag
       community.aws.ec2_instance_info:
         filters:
-       "tag:Name": app_prod
+          tag:Name: app_prod
       register: app_prod_result
 
     - name: Add public IP of builder
