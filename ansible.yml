@@ -7,42 +7,41 @@
   gather_facts: False
 
   tasks:
+  - name: Gather information about any instance with a tag
+    community.aws.ec2_instance_info:
+      filters:
+        tag:Name: app_build
+    register: app_build_result
 
-    - name: Gather information about any instance with a tag
-      community.aws.ec2_instance_info:
-        filters:
-          tag:Name: app_build
-        register: app_build_result
+  - name: Gather information about any instance with a tag
+    community.aws.ec2_instance_info:
+      filters:
+        tag:Name: app_prod
+    register: app_prod_result
 
-    - name: Gather information about any instance with a tag
-      community.aws.ec2_instance_info:
-        filters:
-          tag:Name: app_prod
-      register: app_prod_result
+  - name: Add public IP of builder
+    add_host:
+      hostname: "{{ item.public_ip }}"
+      groupname: awsBuilder
+    loop: "{{ app_build_result.instances }}"
 
-    - name: Add public IP of builder
-      add_host:
-        hostname: "{{ item.public_ip }}"
-        groupname: awsBuilder
-      loop: "{{ app_build_result.instances }}"
+  - name: Add public IP of prod
+    add_host:
+      hostname: "{{ item.public_ip }}"
+      groupname: awsProd
+    loop: "{{ app_prod_result.instances }}"
 
-    - name: Add public IP of prod
-      add_host:
-        hostname: "{{ item.public_ip }}"
-        groupname: awsProd
-      loop: "{{ app_prod_result.instances }}"
+  - name: Add EC2 awsBuilder as known hosts
+    known_hosts:
+      name: "{{ item.public_ip }}"
+      key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_ip) }}"
+    with_items: "{{ app_build_result.instances  }}"
 
-    - name: Add EC2 awsBuilder as known hosts
-      known_hosts:
-        name: "{{ item.public_ip }}"
-        key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_ip) }}"
-      with_items: "{{ app_build_result.instances  }}"
-
-    - name: Add EC2 awsProd as known hosts
-      known_hosts:
-        name: "{{ item.public_ip }}"
-        key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_ip) }}"
-      with_items: "{{ app_prod_result.instances  }}"
+  - name: Add EC2 awsProd as known hosts
+    known_hosts:
+      name: "{{ item.public_ip }}"
+      key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_ip) }}"
+    with_items: "{{ app_prod_result.instances  }}"
 
 #-----------------
 #Configure the builder node and build web app
@@ -55,39 +54,39 @@
   gather_facts: False
 
   tasks:
-    - name: Update repo cache
-      apt:
-        update_cache: yes
+  - name: Update repo cache
+    apt:
+      update_cache: yes
 
-    - name: Ensure necessary packages are installed
-      apt: name={{ item }} state=present
-      with_items:
-        - docker.io
-        - awscli
-        - defaul-jdk
-        - maven
+  - name: Ensure necessary packages are installed
+    apt: name={{ item }} state=present
+    with_items:
+      - docker.io
+      - awscli
+      - defaul-jdk
+      - maven
 
-    - name: Ensure jave source code is present
-      git:
-        repo: https://github.com/azamated/boxfuse-sample-java-war-hello.git
-        version: master
-        dest: /tmp/box
+  - name: Ensure jave source code is present
+    git:
+      repo: https://github.com/azamated/boxfuse-sample-java-war-hello.git
+      version: master
+      dest: /tmp/box
 
-    - name: Build java source code with maven
-      command: mvn package -f /tmp/box
+  - name: Build java source code with maven
+    command: mvn package -f /tmp/box
 
-    #Build docker image, deploy web app & push it to AWS registry
-    - name: Build docker image
-      command: docker build -f /tmp/box/Dockerfile -t boxfusewebapp /tmp/box
+  #Build docker image, deploy web app & push it to AWS registry
+  - name: Build docker image
+    command: docker build -f /tmp/box/Dockerfile -t boxfusewebapp /tmp/box
 
-    - name: Tag docker image
-      command: docker tag boxfusewebapp:latest 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+  - name: Tag docker image
+    command: docker tag boxfusewebapp:latest 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
 
-    - name: Login to ECR
-      shell: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 013898691880.dkr.ecr.us-east-2.amazonaws.com
+  - name: Login to ECR
+    shell: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 013898691880.dkr.ecr.us-east-2.amazonaws.com
 
-    - name: Push dockerimage to ECR
-      command: docker push 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+  - name: Push dockerimage to ECR
+    command: docker push 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
 
 #-----------------
 #Configure the production node and run docker image
@@ -100,40 +99,40 @@
   gather_facts: False
 
   tasks:
-    - name: Update repo cache
-      apt:
-        update_cache: yes
+  - name: Update repo cache
+    apt:
+      update_cache: yes
 
-    - name: Ensure aws directory is created
-      file:
-        path: ~/.aws
-        state: directory
-        mode: 0755
+  - name: Ensure aws directory is created
+    file:
+      path: ~/.aws
+      state: directory
+      mode: 0755
 
-    - name: Ensure AWS config presents
-      copy:
-        src: ~/.aws/config
-        dest: ~/.aws/config
-        mode: 0600
+  - name: Ensure AWS config presents
+    copy:
+      src: ~/.aws/config
+      dest: ~/.aws/config
+      mode: 0600
 
-    - name: Ensure AWS keys present
-      copy:
-        src: ~/.aws/credentials
-        dest: ~/.aws/credentials
-        mode: 0600
+  - name: Ensure AWS keys present
+    copy:
+      src: ~/.aws/credentials
+      dest: ~/.aws/credentials
+      mode: 0600
 
-    #Pull the docker image and run on production
-    - name: Ensure necessary packages are installed
-      apt: name={{ item }} state=present
-      with_items:
-        - docker.io
-        - awscli
+  #Pull the docker image and run on production
+  - name: Ensure necessary packages are installed
+    apt: name={{ item }} state=present
+    with_items:
+      - docker.io
+      - awscli
 
-    - name: Login to ECR
-      shell: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 013898691880.dkr.ecr.us-east-2.amazonaws.com
+  - name: Login to ECR
+    shell: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 013898691880.dkr.ecr.us-east-2.amazonaws.com
 
-    - name: Pull dockerimage from ECR
-      command: docker pull 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+  - name: Pull dockerimage from ECR
+    command: docker pull 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
 
-    - name: Run docker with app
-      command: docker run -d -p 8080:8080 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp
+  - name: Run docker with app
+    command: docker run -d -p 8080:8080 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp
