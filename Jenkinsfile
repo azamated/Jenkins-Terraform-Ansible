@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-      TF_VAR_aws_secret_key = credentials('AWS_ACCESS_KEY_ID')
-      TF_VAR_aws_access_key = credentials('AWS_SECRET_ACCESS_KEY')
+      TF_VAR_aws_access_key = credentials('AWS_ACCESS_KEY_ID')
+      TF_VAR_aws_secret_key = credentials('AWS_SECRET_ACCESS_KEY')
     }
 
     //Building tool
@@ -26,7 +26,7 @@ pipeline {
         }
        stage ('Terraform Plan and Apply') {
             steps {
-                sh "terraform plan -var aws_access_key='aws_secret_key' -var aws_secret_key='aws_access_key'"
+                sh "terraform plan"
                 sh "terraform apply -auto-approve"
             }
        }
