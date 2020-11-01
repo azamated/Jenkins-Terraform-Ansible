@@ -8,7 +8,7 @@ pipeline {
 
     //Building tool
     tools {
-        terraform "TF
+        terraform "TF"
     }
 
     //Stages begin
