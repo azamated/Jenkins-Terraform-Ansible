@@ -1,6 +1,6 @@
 ---
 #-----------------
-#Prepare and Provision instances
+#AWS Instance inventory and preparation
 #-----------------
 - hosts: localhost
   connection: local
