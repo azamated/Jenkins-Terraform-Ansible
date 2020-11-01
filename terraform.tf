@@ -20,7 +20,7 @@ provider "aws" {
 #Copy a public key to instances
 resource "aws_key_pair" "id_rsa" {
   key_name   = "aws_id_rsa_pub"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDNxhmHLltrEARihdLYyZfZSIY4zs04u/8fTaieCkfDIeDN3BPFCwUD6+ahw4AC+YWCXuj0HpR4dR4MyNeRzeLz0EhvRmGPuslAByBs/sNTkb1HaoMxvzOvcPd6hTQGv2VN/RYfq+O5XWR74yY2vOZ+mtsWT2q5syKsIBsQco3K9apLaX03+4X9xAvPjSP0WWi8YBBpZ/rdzQq1pyPO2eKBpq5zF61B1E9D98UfTX82ZPVg7Hrr85YB8Pc+pCPti+9qOLJEBXacZdt43KMwYnR+XbZHG25qS/o+wDsf1j2GzUfgGA9yIq+ZNrBFMJDrGBCvZbxlg4d3DhVcfrAxY7eW5DqyqXSjY+NGQbhlL8bBdXS+a/X0iLAwNPU4tv9vNg+XMk6lL6JhJDyn3Ri9qKzU5W0EIrHeHZbk1PEnUzW1XEIxjD1Jg4qcwvQVvJVjXfCrwJPimPTCfd3RgjEhyoA0liAnPgrQw6+46f1EfrR4n7swhfhmJIyphZo9bWxNfyM= root@devops"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDA2FLShQXuivwKUxqB+Rm5SSOSZ+DBZ5E/PP83vSokp/p/Q9zodpNUv3S2cOW/nypQfKHKXjCqZ7Zn2gatkheCtFFeYpUQohmKmzpdUb1uSLFax6Fsa7Wkx6MFMRxgWz0hNpFEgpUxEMcJADBkRMJ5pgxzVSE5yP2p5mOxd5pXXToVRRLZPv2LhxklnsXcdVUvzYhBGj/dDD9yi2nB+e7y87AV/MXYhtwMIvyl2qDkC2EgAOw3612MCCNA43wO9PFQkfgFx73RLsrKiZKQsJzU7ds4B/4kaanF3SEz1SpN+2BMhonOL1AO6cngTCTrRQKwDYaWB4jElgBQTqeGvut5 jenkins@039cd1d9c2e8"
 }
 
 resource "aws_instance" "builder" {

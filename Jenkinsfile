@@ -8,7 +8,8 @@ pipeline {
 
     //Building tool
     tools {
-        terraform "TF"
+        tool name: 'TF', type: 'terraform'
+        tool name: 'Ans', type: 'org.jenkinsci.plugins.ansible.AnsibleInstallation'
     }
 
     //Stages begin
