@@ -1,6 +1,6 @@
 ---
 #-----------------
-#Prfepare and Provision instances
+#Prepare and Provision instances
 #-----------------
 - hosts: localhost
   connection: local
