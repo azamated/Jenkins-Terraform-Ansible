@@ -49,7 +49,7 @@ resource "google_compute_instance" "vm_instance1" {
   #Remote command execution over ssh
   provisioner "remote-exec" {
     inline = [
-      "apt-get update && apt-get install -y docker.io mc wget openjdk-8-jdk python-boto ansible awscli",
+      "apt-get update && apt-get install -y docker.io mc wget openjdk-8-jdk python-boto ansible awscli"
     ]
   }
     connection {
