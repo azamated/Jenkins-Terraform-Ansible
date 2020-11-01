@@ -23,10 +23,10 @@
     register: app_build_result
 
   - name: Gather information about the tag "prod"
-      community.aws.ec2_instance_info:
-        filters:
-          "tag:Name": app_prod
-      register: app_prod_result
+    community.aws.ec2_instance_info:
+      filters:
+        "tag:Name": app_prod
+    register: app_prod_result
 
   - name: Add public IP of builder
     add_host:
