@@ -9,7 +9,7 @@ provider "google" {
 
 # Declaring instance-1
 resource "google_compute_instance" "vm_instance1" {
-  name         = "ubuntu-admin-vm3"
+  name         = "ubuntu-admin-vm4"
   machine_type = "e2-micro"
 
 
@@ -49,7 +49,7 @@ resource "google_compute_instance" "vm_instance1" {
   #Remote command execution over ssh
   provisioner "remote-exec" {
     inline = [
-      "apt-get update && apt-get install -y docker.io wget openjdk-8-jdk"
+      "apt-get update && apt-get install -y docker.io wget openjdk-8-jre openjdk-8-jdk"
     ]
   }
     connection {
