@@ -3,7 +3,6 @@ Task: Write a Jenkins pipeline that builds and deploys a Java web application on
 Content:
  - Jenkinsfile -- Jenkins pipeline file
  - terraform.tf -- Terraform config file
- - variables.tf -- variable file for AWS-Terraform authentication
  - ansible.yml -- Ansible conf file
  - commands -- useful commands for the project
  - Readme.md
