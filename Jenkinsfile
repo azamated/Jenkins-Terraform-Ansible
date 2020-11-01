@@ -11,13 +11,22 @@ pipeline {
         terraform "TF"
     }
 
+
+    node {
+        dir('RepoOne') {
+            git url: 'https://github.com/azamated/Jenkins-Terraform-Ansible.git'
+        }
+    }
+
     //Stages begin
     stages {
-        stage ('git')   {
-            steps {
-                git 'https://github.com/azamated/Jenkins-Terraform-Ansible.git'
-            }
-        }
+        //stage ('git')   {
+        //    steps {
+         //       git branch: 'master',
+         //       url: 'https://github.com/azamated/Jenkins-Terraform-Ansible.git'
+         //   }
+       // }
+
 
        stage ('Terraform Init') {
             steps {
