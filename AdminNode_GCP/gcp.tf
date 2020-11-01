@@ -9,7 +9,7 @@ provider "google" {
 
 # Declaring instance-1
 resource "google_compute_instance" "vm_instance1" {
-  name         = "ubuntu-admin-vm"
+  name         = "ubuntu-admin-vm1"
   machine_type = "e2-micro"
 
 
@@ -49,10 +49,7 @@ resource "google_compute_instance" "vm_instance1" {
   #Remote command execution over ssh
   provisioner "remote-exec" {
     inline = [
-      "apt-get update && apt-get install -y docker.io mc wget openjdk-8-jdk",
-      "wget && wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -",
-      "sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'",
-      "apt-get update && apt-get install jenkins python-boto ansible awscli -y"
+      "apt-get update && apt-get install -y docker.io mc wget openjdk-8-jdk python-boto ansible awscli",
     ]
   }
     connection {
