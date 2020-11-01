@@ -19,7 +19,6 @@ pipeline {
             }
         }
 
-
        stage ('Terraform Init') {
             steps {
                 sh 'terraform init'
@@ -27,7 +26,7 @@ pipeline {
         }
        stage ('Terraform Plan and Apply') {
             steps {
-                sh "terraform plan"
+                sh "terraform plan -var aws_access_key='aws_secret_key' -var aws_secret_key='aws_access_key'"
                 sh "terraform apply -auto-approve"
             }
        }

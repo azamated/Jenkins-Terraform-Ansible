@@ -12,15 +12,13 @@ terraform {
 
 provider "aws" {
   region = "us-east-2"
-  //access_key = var.aws_access_key
-  //secret_key = var.aws_secret_key
 }
 
 
 #Copy a public key to instances
 resource "aws_key_pair" "id_rsa" {
   key_name   = "aws_id_rsa_pub"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDA2FLShQXuivwKUxqB+Rm5SSOSZ+DBZ5E/PP83vSokp/p/Q9zodpNUv3S2cOW/nypQfKHKXjCqZ7Zn2gatkheCtFFeYpUQohmKmzpdUb1uSLFax6Fsa7Wkx6MFMRxgWz0hNpFEgpUxEMcJADBkRMJ5pgxzVSE5yP2p5mOxd5pXXToVRRLZPv2LhxklnsXcdVUvzYhBGj/dDD9yi2nB+e7y87AV/MXYhtwMIvyl2qDkC2EgAOw3612MCCNA43wO9PFQkfgFx73RLsrKiZKQsJzU7ds4B/4kaanF3SEz1SpN+2BMhonOL1AO6cngTCTrRQKwDYaWB4jElgBQTqeGvut5 jenkins@039cd1d9c2e8"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmmh41bXYpmSmrfRZAFpUs2yvZ5dEK1juSbOdCFv79RcKz6K3ktqzFgAE/8CHz75G7epNTSzcGD5DxYxKCbOhdEOV0nXkVmYYc0PfMZ+Ii1GRcLqYUHi0gHdZ6z8Mf2YIzzWRlddiO0Zu84b4Hk8JLuvL6qZBp+bTH83M92LBw2ZCIlhZGvkoLtil/C2hLvAoEgTRS3uK31S+FLCAorZ2ZMzEGwt/3bQV8N6vUo8ElqHNL0sbPECgUFKuZb5rrEMK0cl/6dhI+NhTFAMpPcJBHwcM7Tyle2Hby8nqXgv/zRpfo0XgCWCQMSlPgtVH/hUNnIuLr6Tp1sobnjpeceEEV root@devops1"
 }
 
 resource "aws_instance" "builder" {

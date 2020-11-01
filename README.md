@@ -22,16 +22,8 @@ Prerequisites:
 Steps:
 
 1. Install Jenkins on DevOps admin machine: 
-apt update
-apt install default-jdk-headless (default-jdk)
-wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
-sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
-add-apt-repository universe
-apt-get update
-apt-get install jenkins -y
-less /var/lib/jenkins/secrets/initialAdminPassword
 
-2. In Jenkins, install the Terraform and Ansible plugins found in the Jenkins plugin market.
+2. In Jenkins, install the Terraform plugin found in the Jenkins plugin market.
 
 3. Create AWS user and note access key and access secret.
 
