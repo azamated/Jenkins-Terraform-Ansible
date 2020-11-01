@@ -8,20 +8,33 @@ apt-get update
 apt-get install jenkins -y
 less /var/lib/jenkins/secrets/initialAdminPassword
 
-#terraform
+#Generate SSH key pair
+ssh-keygen
+
+#Jenkins from Docker
+docker run -d -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+
+#Terraform
 https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip
+
+#Ansible
+apt install ansible
+
+#AWS cli
+apt install awscli
+aws configure
 
 #Jenkins plugins
 - Ansible
 - Terraform
 
-#Jenkins docker hub
-docker run -d -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
-
-#install python-pip and boto
+#Install python-pip and boto --required for AWS CLI
 apt install -y python3-pip
 pip3 install boto
 pip3 install boto3
 pip3 install docker
 
+#Export variables in the Jenkins machine
+export TF_VAR_aws_access_key="***"
+export TF_VAR_aws_secret_key="***"
 
