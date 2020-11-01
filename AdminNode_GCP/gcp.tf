@@ -9,7 +9,7 @@ provider "google" {
 
 # Declaring instance-1
 resource "google_compute_instance" "vm_instance1" {
-  name         = "ubuntu-adminVM"
+  name         = "ubuntu-admin"
   machine_type = "e2-micro"
 
 
