@@ -42,13 +42,13 @@
   - name: Add public IP of builder
     add_host:
       hostname: "{{ item.public_ip }}"
-      groupname: awsBuilder
+      groupname: app_build_result
     loop: "{{ app_build_result.instances }}"
 
   - name: Add public IP of prod
     add_host:
       hostname: "{{ item.public_ip }}"
-      groupname: awsProd
+      groupname: app_prod_result
     loop: "{{ app_prod_result.instances }}"
 
   - name: Add EC2 awsBuilder as known hosts
