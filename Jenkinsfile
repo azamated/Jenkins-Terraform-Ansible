@@ -37,6 +37,11 @@ pipeline {
                 sh "ansible-playbook ansible.yml"
             }
        }*/
+       stage ('Terraform Plan and Apply') {
+            steps {
+                sh "ansible-galaxy collection install community.aws"
+                sh "ansible-galaxy collection install community.general"
+
        stage ('Initiate playbook') {
             steps {
                 ansiblePlaybook colorized: true, installation: 'Ans', playbook: 'ansible.yml'
