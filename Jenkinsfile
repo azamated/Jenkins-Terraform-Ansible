@@ -39,7 +39,7 @@ pipeline {
        }*/
        stage ('Initiate playbook') {
             steps {
-                ansiblePlaybook colorized: true, installation: 'Ans', playbook: 'ansible.yml'
+                ansiblePlaybook colorized: true, credentialsId: '4a40fc62-80e4-4891-b252-7e5a7fe4f3ce', installation: 'Ans', playbook: 'ansible.yml'
             }
        }
 
