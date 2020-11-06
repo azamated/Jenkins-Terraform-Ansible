@@ -114,22 +114,17 @@
  # - name: Build docker image
  #   command: docker build -f /tmp/box/Dockerfile -t boxfusewebapp /tmp/box
 
-  - name: Build an image
-    docker_image:
-      path: /tmp/box/Dockerfile
-      name: boxfusewebapp
-      tag: boxfusewebapp
-      push: no
-
   - name: Login to ECR
     shell: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 013898691880.dkr.ecr.us-east-2.amazonaws.com
 
-  - name: Tag and push to docker hub
-    docker_image:
-      name: boxfusewebapp
-      repository: 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+  - name: Build an image and push it to a private repo
+    community.general.docker_image:
+      build:
+        path: /tmp/box
+      name: 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
       tag: boxfusewebapp:latest
       push: yes
+      source: build
 
   #- name: Tag docker image
   #  command: docker tag boxfusewebapp:latest 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
