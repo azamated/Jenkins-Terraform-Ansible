@@ -79,7 +79,8 @@
       update_cache: yes
 
   - name: Ensure necessary packages are installed
-    apt: name= "{{ item }}" state=present
+    apt: {{ item }}
+    state: present
     with_items:
       - docker.io
       - awscli
@@ -143,7 +144,8 @@
 
   #Pull the docker image and run on production
   - name: Ensure necessary packages are installed
-    apt: name= "{{ item }}" state=present
+    apt: {{ item }}
+    state: present
     with_items:
       - docker.io
       - awscli
