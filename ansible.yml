@@ -55,13 +55,13 @@
     known_hosts:
       name: "{{ item.public_ip }}"
       key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_ip) }}"
-    with_items: "{{ app_build_result.instances  }}"
+    with_items: "{{ app_build_result.instances }}"
 
   - name: Add EC2 awsProd as known hosts
     known_hosts:
       name: "{{ item.public_ip }}"
       key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_ip) }}"
-    with_items: "{{ app_prod_result.instances  }}"
+    with_items: "{{ app_prod_result.instances }}"
 
 #-----------------
 #Configure the builder node and build web app
