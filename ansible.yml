@@ -26,7 +26,7 @@
       host: "{{ item.public_dns_name }}"
       port: 22
       delay: 5
-      timeout: 10
+      timeout: 1
       state: started
     with_items: "{{ app_build_result.instances }}"
 
@@ -35,13 +35,13 @@
       host: "{{ item.public_dns_name }}"
       port: 22
       delay: 5
-      timeout: 10
+      timeout: 1
       state: started
     with_items: "{{ app_prod_result.instances }}"
 
   - name: Add public IP of builder
     add_host:
-      hostname: "{{ public_ip_address }}"
+      hostname: "{{ public_ip }}"
       groupname: awsBuilder
     loop: "{{ app_build_result.instances }}"
 
