@@ -27,6 +27,7 @@
       timeout: 1
       state: started
     with_items: "{{ app_build_result.instances }}"
+    remote_user: ubuntu
 
   - name: Wait for SSH to come up
     wait_for:
@@ -36,6 +37,7 @@
       timeout: 1
       state: started
     with_items: "{{ app_prod_result.instances }}"
+    remote_user: ubuntu
 
   - name: Add public IP of builder
     add_host:
