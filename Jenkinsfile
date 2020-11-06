@@ -39,7 +39,7 @@ pipeline {
        }*/
        stage ('Initiate playbook') {
             steps {
-                ansiblePlaybook become: true, colorized: true, installation: 'Ans', playbook: './'
+                ansiblePlaybook become: true, colorized: true, installation: 'Ans', playbook: 'ansible.yml'
             }
        }
 
