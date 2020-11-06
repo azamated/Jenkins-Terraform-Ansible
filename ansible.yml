@@ -111,17 +111,32 @@
     command: mvn package -f /tmp/box
 
   #Build docker image, deploy web app & push it to AWS registry
-  - name: Build docker image
-    command: docker build -f /tmp/box/Dockerfile -t boxfusewebapp /tmp/box
+ # - name: Build docker image
+ #   command: docker build -f /tmp/box/Dockerfile -t boxfusewebapp /tmp/box
 
-  - name: Tag docker image
-    command: docker tag boxfusewebapp:latest 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+  - name: Build an image
+    docker_image:
+      path: /tmp/box/Dockerfile
+      tag: boxfusewebapp
+      push: no
 
   - name: Login to ECR
     shell: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 013898691880.dkr.ecr.us-east-2.amazonaws.com
 
-  - name: Push dockerimage to ECR
-    command: docker push 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+  - name: Tag and push to docker hub
+    docker_image:
+      name: boxfusewebapp
+      repository: 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+      tag: boxfusewebapp:latest
+      push: yes
+
+  #- name: Tag docker image
+  #  command: docker tag boxfusewebapp:latest 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+
+
+
+  #- name: Push dockerimage to ECR
+  #  command: docker push 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
 
 #-----------------
 #Configure the production node and run docker image
