@@ -22,7 +22,7 @@ pipeline {
             }
         }
 
-       /*stage ('Terraform Init') {
+       stage ('Terraform Init') {
             steps {
                 sh 'terraform init'
             }
@@ -34,12 +34,12 @@ pipeline {
             }
        }
          //Ansible starts here
-       /*stage ('Initiate playbook') {
+       stage ('Initiate playbook') {
             steps {
                 sh "sleep 1m"
                 sh "ansible-playbook ansible.yml"
             }
-       }*/
+       }
        stage ('Terraform Plan and Apply') {
             steps {
                 sh "ansible-galaxy collection install community.aws"
