@@ -13,7 +13,7 @@ General Requirements:
 
 Prerequisites:
 - Jenkins: Java JDK
-- Ansible: Python, Boto, community.aws (ansible galaxy collection)
+- Ansible: Python, Boto, botocore, community.aws (ansible galaxy collection)
 - AWS: IAM user with API and CLI access, ECR repository
 - A project with all configuration file shall be hosted in GitHub in a separate repo.
 - A Java project is hosted in GitHub ain a separate repo.

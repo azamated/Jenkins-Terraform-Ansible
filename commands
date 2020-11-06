@@ -8,10 +8,6 @@ less /var/lib/jenkins/secrets/initialAdminPassword
 #Generate SSH key pair
 ssh-keygen
 
-#Export variables in the Jenkins machine
-export TF_VAR_aws_access_key="***"
-export TF_VAR_aws_secret_key="***"
-
 #Jenkins from Docker
 docker run -d -v jenkins_home:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
 
