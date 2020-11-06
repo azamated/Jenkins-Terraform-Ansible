@@ -30,12 +30,19 @@ pipeline {
                 sh "terraform apply -auto-approve"
             }
        }
-         //Ansible start here
-       stage ('Initiate playbook') {
+         //Ansible starts here
+       /*stage ('Initiate playbook') {
             steps {
                 sh "sleep 1m"
                 sh "ansible-playbook ansible.yml"
             }
+       }*/
+       stage ('Initiate playbook') {
+            steps {
+                ansiblePlaybook become: true, colorized: true, installation: 'Ans', playbook: '.'
+            }
        }
+
+
     }
 }
