@@ -4,18 +4,9 @@
 #-----------------
 - hosts: localhost
   connection: local
-  gather_facts: False
+  #gather_facts: False
 
-  tasks:
-  - name: Wait for SSH to come up
-    wait_for:
-      host: "{{ item.public_dns_name }}"
-      port: 22
-      delay: 5
-      timeout: 320
-      state: started
-    with_items: "{{ ec2.instances }}"
-
+ tasks:
   - name: Gather information about the tag "build"
     community.aws.ec2_instance_info:
       filters:
