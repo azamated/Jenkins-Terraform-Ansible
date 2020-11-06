@@ -44,7 +44,6 @@ pipeline {
             steps {
                 sh "ansible-galaxy collection install community.aws"
                 sh "ansible-galaxy collection install community.general"
-                sh "chmod -R jenkins u+w /root/.ssh"
             }
        }
 
