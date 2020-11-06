@@ -49,7 +49,7 @@ pipeline {
 
        stage ('Initiate playbook') {
             steps {
-                ansiblePlaybook colorized: true, installation: 'Ans', playbook: 'ansible.yml'
+                ansiblePlaybook disableHostKeyChecking: true, colorized: true, installation: 'Ans', playbook: 'ansible.yml'
             }
        }
 
