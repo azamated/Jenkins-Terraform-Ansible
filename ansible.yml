@@ -98,7 +98,7 @@
 
   - name: Ensure necessary packages are installed
     apt:
-      name: ['docker.io', 'awscli', 'default-jdk', 'maven', 'python-pip']
+      name: ['docker.io', 'awscli', 'default-jdk', 'maven']
       state: present
 
   - name: Ensure jave source code is present
