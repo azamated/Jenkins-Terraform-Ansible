@@ -77,7 +77,6 @@
   become: yes
   become_user: root
   gather_facts: False
-  key_name: id_rsa
 
   tasks:
   - name: Update repo cache
