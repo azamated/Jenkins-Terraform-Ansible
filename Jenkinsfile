@@ -41,6 +41,8 @@ pipeline {
             steps {
                 sh "ansible-galaxy collection install community.aws"
                 sh "ansible-galaxy collection install community.general"
+            }
+       }
 
        stage ('Initiate playbook') {
             steps {
