@@ -41,15 +41,15 @@
 
   - name: Add public IP of builder
     add_host:
-      hostname: "{{ network_interfaces[public_ip_address] }}"
+      hostname: "{{ public_ip_address }}"
       groupname: awsBuilder
-    loop: "{{ app_build_result.instances }}"
+    loop: "{{ app_build_result.instances.network_interfaces }}"
 
   - name: Add public IP of prod
     add_host:
-      hostname: "{{ network_interfaces[public_ip_address] }}"
+      hostname: "{{ public_ip }}"
       groupname: awsProd
-    loop: "{{ app_prod_result.instances }}"
+    loop: "{{ app_prod_result.instances.network_interfaces }}"
 
   - name: Add EC2 awsBuilder as known hosts
     known_hosts:
