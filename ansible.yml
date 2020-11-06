@@ -5,7 +5,6 @@
 - hosts: localhost
   connection: local
   gather_facts: False
-  user: root
 
   tasks:
   - name: Gather information about the tag "build"
