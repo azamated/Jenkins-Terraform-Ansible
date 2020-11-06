@@ -43,23 +43,23 @@
     add_host:
       hostname: "{{ public_ip_address }}"
       groupname: awsBuilder
-    loop: "{{ app_build_result.instances.network_interfaces }}"
+    loop: "{{ app_build_result.instances }}"
 
   - name: Add public IP of prod
     add_host:
       hostname: "{{ public_ip }}"
       groupname: awsProd
-    loop: "{{ app_prod_result.instances.network_interfaces }}"
+    loop: "{{ app_prod_result.instances}}"
 
   - name: Add EC2 awsBuilder as known hosts
     known_hosts:
-      name: "{{ network_interfaces[public_ip_address] }}"
+      name: "{{ public_ip }}"
       key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_ip) }}"
     with_items: "{{ app_build_result.instances }}"
 
   - name: Add EC2 awsProd as known hosts
     known_hosts:
-      name: "{{ network_interfaces[public_ip_address] }}"
+      name: "{{ public_ip_address }}"
       key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_ip) }}"
     with_items: "{{ app_prod_result.instances }}"
 
