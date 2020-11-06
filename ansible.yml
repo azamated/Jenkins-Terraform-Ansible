@@ -165,7 +165,7 @@
       dest: ~/.aws/credentials
       mode: 0600
 
-  #Pull the docker image and run on production
+  #Install packages
   - name: Ensure necessary packages are installed
     apt:
       name: ['docker.io', 'awscli']
@@ -174,20 +174,22 @@
   - name: Login to ECR
     shell: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 013898691880.dkr.ecr.us-east-2.amazonaws.com
 
-  - name: Pull an image
-    community.general.docker_image:
-      name: 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
-      source: pull
+  #Pull the docker image and run on production
 
-  - name: Start a container
-    community.general.docker_container:
-      name: boxfusewebapp
-      image: 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp
-      exposed_ports:
-        - 8080
+  #- name: Pull an image
+  #  community.general.docker_image:
+  #    name: 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+  #    source: pull
 
-  #- name: Pull dockerimage from ECR
-  #  command: docker pull 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+  #- name: Start a container
+  #  community.general.docker_container:
+  #    name: boxfusewebapp
+  #    image: 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp
+  #    exposed_ports:
+  #      - 8080
 
-  #- name: Run docker with app
-  #  command: docker run -d -p 8080:8080 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp
+  - name: Pull dockerimage from ECR
+    command: docker pull 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+
+  - name: Run docker with app
+    command: docker run -d -p 8080:8080 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp
