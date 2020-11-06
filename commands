@@ -32,6 +32,9 @@ apt install -y python-boto python-pip
 pip install boto
 pip install docker
 
+#Give the jenkins user sudo rights
+usermod -a -G sudo jenkins
+
 
 
 
