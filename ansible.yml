@@ -11,12 +11,14 @@
     community.aws.ec2_instance_info:
       filters:
         "tag:Name": app_build
+        instance-state-name: [ "running"]
     register: app_build_result
 
   - name: Gather information about the tag "prod"
     community.aws.ec2_instance_info:
       filters:
         "tag:Name": app_prod
+        instance-state-name: [ "running"]
     register: app_prod_result
 
   - name: Wait for SSH to come up
@@ -27,7 +29,6 @@
       timeout: 10
       state: started
     with_items: "{{ app_build_result.instances }}"
-    remote_user: ubuntu
 
   - name: Wait for SSH to come up
     wait_for:
@@ -37,7 +38,6 @@
       timeout: 10
       state: started
     with_items: "{{ app_prod_result.instances }}"
-    remote_user: ubuntu
 
   - name: Add public IP of builder
     add_host:
