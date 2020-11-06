@@ -24,7 +24,7 @@
       host: "{{ item.public_dns_name }}"
       port: 22
       delay: 5
-      timeout: 320
+      timeout: 1
       state: started
     with_items: "{{ app_build_result.instances }}"
 
@@ -33,7 +33,7 @@
       host: "{{ item.public_dns_name }}"
       port: 22
       delay: 5
-      timeout: 320
+      timeout: 1
       state: started
     with_items: "{{ app_prod_result.instances }}"
 
