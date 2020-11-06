@@ -30,7 +30,7 @@ aws configure
 #Install python-pip and boto --required for AWS CLI
 apt install -y python-boto python-pip
 pip install boto
-pip install docker-py
+pip install docker
 
 
 

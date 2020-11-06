@@ -98,7 +98,7 @@
 
   - name: Ensure necessary packages are installed
     apt:
-      name: ['docker.io', 'awscli', 'default-jdk', 'maven']
+      name: ['docker.io', 'awscli', 'default-jdk', 'maven', 'python-pip']
       state: present
 
   - name: Ensure jave source code is present
@@ -110,29 +110,27 @@
   - name: Build java source code with maven
     command: mvn package -f /tmp/box
 
-  #Build docker image, deploy web app & push it to AWS registry
- # - name: Build docker image
- #   command: docker build -f /tmp/box/Dockerfile -t boxfusewebapp /tmp/box
-
   - name: Login to ECR
     shell: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 013898691880.dkr.ecr.us-east-2.amazonaws.com
 
-  - name: Build an image and push it to a private repo
-    community.general.docker_image:
-      build:
-        path: /tmp/box
-      name: 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
-      tag: boxfusewebapp:latest
-      push: yes
-      source: build
+  #Build docker image, deploy web app & push it to AWS registry
+  #- name: Build an image and push it to a private repo
+  #  community.general.docker_image:
+  #    build:
+  #      path: /tmp/box
+  #    name: 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp
+  #    tag: latest
+  #    push: yes
+  #    source: build
 
-  #- name: Tag docker image
-  #  command: docker tag boxfusewebapp:latest 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+  - name: Build docker image
+    command: docker build -f /tmp/box/Dockerfile -t boxfusewebapp /tmp/box
 
+  - name: Tag docker image
+    command: docker tag boxfusewebapp:latest 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
 
-
-  #- name: Push dockerimage to ECR
-  #  command: docker push 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+  - name: Push dockerimage to ECR
+    command: docker push 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
 
 #-----------------
 #Configure the production node and run docker image
@@ -176,8 +174,20 @@
   - name: Login to ECR
     shell: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 013898691880.dkr.ecr.us-east-2.amazonaws.com
 
-  - name: Pull dockerimage from ECR
-    command: docker pull 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+  - name: Pull an image
+    community.general.docker_image:
+      name: 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+      source: pull
 
-  - name: Run docker with app
-    command: docker run -d -p 8080:8080 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp
+  - name: Start a container
+    community.general.docker_container:
+      name: boxfusewebapp
+      image: 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp
+      exposed_ports:
+        - 8080
+
+  #- name: Pull dockerimage from ECR
+  #  command: docker pull 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp:latest
+
+  #- name: Run docker with app
+  #  command: docker run -d -p 8080:8080 013898691880.dkr.ecr.us-east-2.amazonaws.com/boxfusewebapp
