@@ -39,7 +39,7 @@ pipeline {
        }*/
        stage ('Initiate playbook') {
             steps {
-                ansiblePlaybook colorized: true, installation: 'Ans', playbook: 'ansible.yml', sudoUser: azamat
+                ansiblePlaybook colorized: true, installation: 'Ans', playbook: 'ansible.yml'
             }
        }
 
