@@ -35,8 +35,12 @@ pip install docker
 #Grant jenkins user access
 sudo visudo
 jenkins    ALL=(ALL) NOPASSWD:ALL
-sudo usermod -a -G root jenkins
-sudo service jenkins restart
 
+
+#Ensure the jenkins user has access to ssh keys and aws config files
+cp /root/.ssh/id_rsa /var/lib/jenkins/.ssh
+cp -r /root/.aws /var/lib/jenkins
+chown jenkins:jenkins ~/.ssh/id_rsa
+chown -R jenkins:jenkins ~/.aws
 
 

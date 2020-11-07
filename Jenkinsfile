@@ -22,7 +22,7 @@ pipeline {
             }
         }
 
-        /*stage ('Terraform Init') {
+        stage ('Terraform Init') {
             steps {
                 sh 'terraform init'
             }
@@ -32,7 +32,7 @@ pipeline {
                 sh "terraform plan"
                 sh "terraform apply -auto-approve"
             }
-       }*/
+       }
         //Ansible starts here
          stage ('Install Ansible aws modules') {
             steps {
