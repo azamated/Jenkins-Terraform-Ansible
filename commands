@@ -32,7 +32,9 @@ apt install -y python-boto python-pip
 pip install boto
 pip install docker
 
-
+#Grant jenkins user access
+sudo visudo
+jenkins    ALL=(ALL) NOPASSWD:ALL
 
 
 

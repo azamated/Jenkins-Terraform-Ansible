@@ -17,7 +17,7 @@ Prerequisites:
 - AWS: IAM user with API and CLI access, ECR repository
 - A project with all configuration file shall be hosted in GitHub in a separate repo.
 - A Java project is hosted in GitHub ain a separate repo.
-- jenkins users must have permission to write to knowm_hosts file
+- jenkins users must have necessary permissions
 
 Steps:
 
