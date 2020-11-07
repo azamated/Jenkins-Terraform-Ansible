@@ -52,7 +52,5 @@ pipeline {
                 ansiblePlaybook disableHostKeyChecking: true, colorized: true, installation: 'Ans', playbook: 'ansible.yml'
             }
        }
-
-
     }
 }
