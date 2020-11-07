@@ -89,13 +89,13 @@
 
   - name: Ensure AWS config presents
     copy:
-      src: ~/.aws/config
+      src: root/.aws/config
       dest: ~/.aws/config
       mode: 0600
 
   - name: Ensure AWS keys present
     copy:
-      src: ~/.aws/credentials
+      src: root/.aws/credentials
       dest: ~/.aws/credentials
       mode: 0600
 
@@ -158,13 +158,13 @@
 
   - name: Ensure AWS config presents
     copy:
-      src: ~/.aws/config
+      src: root/.aws/config
       dest: ~/.aws/config
       mode: 0600
 
   - name: Ensure AWS keys present
     copy:
-      src: ~/.aws/credentials
+      src: root/.aws/credentials
       dest: ~/.aws/credentials
       mode: 0600
 
