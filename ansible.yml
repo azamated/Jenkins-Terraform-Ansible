@@ -7,13 +7,6 @@
   gather_facts: False
   become: yes
 
-  tasks:
-  - name: copy ssh private key to jenkins home directory
-    copy:
-      src: /root/.ssh/id_rsa
-      dest: /var/lib/jenkins/.ssh
-    delegate_to: localhost
-
   - name: Gather information about the tag "build"
     community.aws.ec2_instance_info:
       filters:
@@ -21,7 +14,6 @@
         instance-state-name: [ "running"]
       region: us-east-2
     register: app_build_result
-
 
   - name: Gather information about the tag "prod"
     community.aws.ec2_instance_info:
