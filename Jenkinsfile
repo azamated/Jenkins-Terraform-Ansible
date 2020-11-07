@@ -22,19 +22,19 @@ pipeline {
             }
         }
 
-      /* stage ('Terraform Init') {
+        stage ('Terraform Init') {
             steps {
                 sh 'terraform init'
             }
         }
-       stage ('Terraform Plan and Apply') {
+        stage ('Terraform Plan and Apply') {
             steps {
                 sh "terraform plan"
                 sh "terraform apply -auto-approve"
             }
-       }*/
+       }
         //Ansible starts here
-       stage ('Install Ansible aws modules') {
+         stage ('Install Ansible aws modules') {
             steps {
                 sh "ansible-galaxy collection install community.aws"
                 sh "ansible-galaxy collection install community.general"
