@@ -58,14 +58,12 @@
 
   - name: Add EC2 awsBuilder as known hosts
     known_hosts:
-      #path: /root/.ssh
       name: "{{ item.public_dns_name }}"
       key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_dns_name) }}"
     with_items: "{{ app_build_result.instances }}"
 
   - name: Add EC2 awsProd as known hosts
     known_hosts:
-      #path: /root/.ssh
       name: "{{ item.public_dns_name }}"
       key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item.public_dns_name) }}"
     with_items: "{{ app_prod_result.instances }}"
