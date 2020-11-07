@@ -35,6 +35,8 @@ pip install docker
 #Grant jenkins user access
 sudo visudo
 jenkins    ALL=(ALL) NOPASSWD:ALL
+sudo usermod -a -G root jenkins
+sudo service jenkins restart
 
 
 
