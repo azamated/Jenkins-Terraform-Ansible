@@ -6,7 +6,7 @@
   connection: local
   gather_facts: False
   become: yes
-  become_user: root
+  #become_user: root
 
   tasks:
   - name: Gather information about the tag "build"
