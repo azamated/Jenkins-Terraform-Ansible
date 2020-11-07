@@ -33,14 +33,8 @@ pipeline {
                 sh "terraform apply -auto-approve"
             }
        }
-         //Ansible starts here
-       stage ('Initiate playbook') {
-            steps {
-                sh "sleep 1m"
-                sh "ansible-playbook ansible.yml"
-            }
-       }
-       stage ('Terraform Plan and Apply') {
+        //Ansible starts here
+       stage ('Install Ansible aws modules') {
             steps {
                 sh "ansible-galaxy collection install community.aws"
                 sh "ansible-galaxy collection install community.general"
