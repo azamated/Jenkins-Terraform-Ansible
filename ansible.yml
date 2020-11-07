@@ -73,6 +73,7 @@
 #-----------------
 - name: Configure EC2 instance
   hosts: awsBuilder
+  connection: ssh
   remote_user: ubuntu
   become: yes
   become_user: root
