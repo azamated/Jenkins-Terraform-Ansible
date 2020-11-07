@@ -22,7 +22,7 @@ pipeline {
             }
         }
 
-       stage ('Terraform Init') {
+       /*stage ('Terraform Init') {
             steps {
                 sh 'terraform init'
             }
@@ -45,7 +45,7 @@ pipeline {
                 sh "ansible-galaxy collection install community.aws"
                 sh "ansible-galaxy collection install community.general"
             }
-       }
+       }*/
 
        stage ('Initiate playbook') {
             steps {
