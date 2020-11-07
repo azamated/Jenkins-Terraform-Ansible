@@ -43,7 +43,7 @@ pipeline {
 
        stage ('Initiate playbook') {
             steps {
-                ansiblePlaybook disableHostKeyChecking: true, colorized: true, installation: 'Ans', playbook: 'ansible.yml', sudo: true
+                ansiblePlaybook disableHostKeyChecking: true, colorized: true, installation: 'Ans', playbook: 'ansible.yml', become: true, becomeUser: 'jenkins'
             }
        }
     }
