@@ -6,7 +6,7 @@
   connection: local
   gather_facts: False
   become: yes
-  become_user: jenkins
+  become_user: azamat
 
   tasks:
   - name: Gather information about the tag "build"
